@@ -103,3 +103,8 @@ int white()
         break;
  return 0;
 }
+void move()
+{
+    desk[Y2][X2] = desk[Y1][X1];
+    desk[Y1][X1] = ' ';
+}
