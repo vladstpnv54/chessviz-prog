@@ -31,3 +31,21 @@ void scanan(int flag) {
     }
   }
 }
+int chartoint(char input[7])
+{
+    if ((input[2] != '-') && (input[2] != 'x')) {
+        return 0;
+    }
+    X1 = (int)input[0] - 'A';
+    Y1 = (int)input[1] - '1';
+    X2 = (int)input[3] - 'A';
+    Y2 = (int)input[4] - '1';
+    if ((input[2] == 'x') && (desk[Y2][X2] == ' ')) {
+        printf("Вроде никого нет, чтобы рубить?\n");
+        return 0;
+    }
+    if ((X2 < 8) && (X2 >= 0) && (Y2 >= 0) && (Y2 < 8) && (X1 >= 0) && (X1 < 8)
+        && (Y1 >= 0) && (Y1 < 8))
+        return 1;
+    return 0;
+}
