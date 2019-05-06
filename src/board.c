@@ -103,8 +103,64 @@ int white()
         break;
  return 0;
 }
+void transformPawn() {
+  char npawn;
+  if ((desk[Y1][X1] == 'p') && (Y2 == 0)) {
+    while (1) {
+      printf("Введите в какую фигуру вревратить:");
+      npawn = getchar();
+      if ((npawn == 'r') || (npawn == 'n') || (npawn == 'b') ||
+          (npawn == 'q')) {
+        desk[Y1][X1] = npawn;
+        break;
+      } else {
+        printf("Введите правильную фигуру.\n");
+      }
+    }
+  }
+  if ((desk[Y1][X1] == 'P') && (Y2 == 7)) {
+    while (1) {
+      printf("Введите в какую фигуру вревратить:");
+      npawn = getchar();
+      if ((npawn == 'R') || (npawn == 'N') || (npawn == 'B') ||
+          (npawn == 'Q')) {
+        desk[Y1][X1] = npawn;
+        break;
+      } else {
+        printf("Введите правильную фигуру.\n");
+      }
+    }
+  }
+}
 void move()
 {
     desk[Y2][X2] = desk[Y1][X1];
     desk[Y1][X1] = ' ';
+}
+int checkWIn(int status) {
+  int i, j, player = 0;
+  if (status == 1) {
+    for (i = 0; i < 8; i++) {
+      for (j = 0; j < 8; j++) {
+        if (desk[i][j] == 'q') {
+          player = 1;
+        }
+      }
+    }
+  }
+  if (status == 2) {
+    for (i = 0; i < 8; i++) {
+      for (j = 0; j < 8; j++) {
+        if (desk[i][j] == 'Q') {
+          player = 2;
+        }
+      }
+    }
+  }
+
+  if (player == 0) {
+    return status;
+  }
+
+  return 0;
 }
