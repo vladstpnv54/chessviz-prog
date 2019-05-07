@@ -1,33 +1,48 @@
+#include "board.h"
+#include "board_print_plain.h"
 #include <stdio.h>
 
-char numbers[8] = {8, 7, 6, 5, 4, 3, 2, 1};
-char board[8][8] = {{'r', 'n', 'b', 'q', 'k', 'b', 'n', 'r'},
-                   {'p', 'p', 'p', 'p', 'p', 'p', 'p', 'p'},
-                   {' ', ' ', ' ', ' ', ' ', ' ', ' ', ' '},
-                   {' ', ' ', ' ', ' ', ' ', ' ', ' ', ' '},
-                   {' ', ' ', ' ', ' ', ' ', ' ', ' ', ' '},
-                   {' ', ' ', ' ', ' ', ' ', ' ', ' ', ' '},
+char numbers[7];
+int X1, X2, Y1, Y2;
+char board[8][8] = {{'R', 'N', 'B', 'K', 'Q', 'B', 'N', 'R'},
                    {'P', 'P', 'P', 'P', 'P', 'P', 'P', 'P'},
-                   {'R', 'N', 'B', 'K', 'Q', 'B', 'N', 'R'}};
+                   {' ', ' ', ' ', ' ', ' ', ' ', ' ', ' '},
+                   {' ', ' ', ' ', ' ', ' ', ' ', ' ', ' '},
+                   {' ', ' ', ' ', ' ', ' ', ' ', ' ', ' '},
+                   {' ', ' ', ' ', ' ', ' ', ' ', ' ', ' '},
+                   {'p', 'p', 'p', 'p', 'p', 'p', 'p', 'p'},
+                   {'r', 'n', 'b', 'q', 'k', 'b', 'n', 'r'}};
 
-void printboard()
-{
-    int i, j;
-    for (i = 0; i < 8; i++) {
-        printf("%d ", numbers[i]);
-        for (j = 0; j < 8; j++) {
-            printf("%c ", board[i][j]);
-        }
-        printf("\n");
+int main() {
+  int status = 0;
+
+  printf("     Шахматы\n");
+  printf("Пример обычного хода: E2-E4\n");
+  printf("Пример хода взятия: E2xE4\n");
+
+  printdesk();
+
+  while (1) {
+    printf("Белые (Большие буквы):");
+    scanan(1);
+    move();
+    printdesk();
+    status = checkWIn(1);
+    if (status != 0) {
+      break;
     }
-    printf("  ");
-    for (i = 0; i < 8; i++)
-        printf("%c ", i + 97);
-    printf("\n");
-}
 
-int main()
-{
-    printboard();
-return 0;
+    printf("Черные (Маленькие буквы):");
+    scanan(2);
+    move();
+    printdesk();
+    status = checkWIn(2);
+    if (status != 0) {
+      break;
+    }
+  }
+
+  printf("Player %d win\n", status);
+
+  return 0;
 }

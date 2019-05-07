@@ -2,15 +2,15 @@
 #include <stdio.h>
 #include <string.h>
 
-extern char input[7];
+extern char numbers[7];
 extern int X1, X2, Y1, Y2;
-extern char desk[8][8];
+extern char board[8][8];
 
 void scanan(int flag) {
   while (1) {
     while (1) {
-      fgets(input, 7, stdin);
-      if (chartoint(input)) {
+      fgets(numbers, 7, stdin);
+      if (chartoint(numbers)) {
         break;
       }
       printf("Введите заново:");
@@ -32,15 +32,15 @@ void scanan(int flag) {
   }
 }
 
-int chartoint(char input[7]) {
-  if ((input[2] != '-') && (input[2] != 'x')) {
+int chartoint(char numbers[7]) {
+  if ((numbers[2] != '-') && (numbers[2] != 'x')) {
     return 0;
   }
-  X1 = (int)input[0] - 'A';
-  Y1 = (int)input[1] - '1';
-  X2 = (int)input[3] - 'A';
-  Y2 = (int)input[4] - '1';
-  if ((input[2] == 'x') && (desk[Y2][X2] == ' ')) {
+  X1 = (int)numbers[0] - 'A';
+  Y1 = (int)numbers[1] - '1';
+  X2 = (int)numbers[3] - 'A';
+  Y2 = (int)numbers[4] - '1';
+  if ((numbers[2] == 'x') && (board[Y2][X2] == ' ')) {
     printf("Вроде никого нет, чтобы рубить?\n");
     return 0;
   }
@@ -51,26 +51,26 @@ int chartoint(char input[7]) {
 }
 
 int white() {
-  if ((desk[Y2][X2] > 'A') && (desk[Y2][X2] < 'S')) {
+  if ((board[Y2][X2] > 'A') && (board[Y2][X2] < 'S')) {
     return 0; //не рубим своих
   }
-  switch (desk[Y1][X1]) {
+  switch (board[Y1][X1]) {
   case 'P':
-    if ((input[2] == '-') && (desk[Y2][X2] != ' ')) {
+    if ((numbers[2] == '-') && (board[Y2][X2] != ' ')) {
       printf("Вроде надо рубить?\n");
       break;
     }
-    if ((desk[Y2][X2] == ' ') && (Y1 == 1) && (X1 == X2) && (Y2 - Y1 > 0) &&
+    if ((board[Y2][X2] == ' ') && (Y1 == 1) && (X1 == X2) && (Y2 - Y1 > 0) &&
         (Y2 - Y1 < 3) && checkY()) {
       return 1; //начальный ход
     }
-    if ((desk[Y2][X2] == ' ') && (X2 == X1) && (Y2 - Y1 == 1)) {
+    if ((board[Y2][X2] == ' ') && (X2 == X1) && (Y2 - Y1 == 1)) {
       transformPawn();
       return 1; //ход по пустым клеткам
     }
-    if ((desk[Y2][X2] < 's' && desk[Y2][X2] > 'a') &&
+    if ((board[Y2][X2] < 's' && board[Y2][X2] > 'a') &&
         ((X2 - X1 == 1) || (X2 - X1 == -1)) && (Y2 - Y1 == 1) &&
-        (input[2] == 'x')) {
+        (numbers[2] == 'x')) {
       return 1; //рубим чужих
     }
     break;
@@ -79,24 +79,24 @@ int white() {
 }
 
 int black() {
-  if ((desk[Y2][X2] > 'a') && (desk[Y2][X2] < 's')) {
+  if ((board[Y2][X2] > 'a') && (board[Y2][X2] < 's')) {
     return 0; //не рубим своих
   }
-  switch (desk[Y1][X1]) {
+  switch (board[Y1][X1]) {
   case 'p':
-    if ((input[2] == '-') && (desk[Y2][X2] != ' ')) {
+    if ((numbers[2] == '-') && (board[Y2][X2] != ' ')) {
       printf("Вроде надо рубить?\n");
       break;
     }
-    if ((desk[Y2][X2] == ' ') && (Y1 == 6) && (X1 == X2) && (Y1 - Y2 > 0) &&
+    if ((board[Y2][X2] == ' ') && (Y1 == 6) && (X1 == X2) && (Y1 - Y2 > 0) &&
         (Y1 - Y2 < 3) && checkY()) {
       return 1; //начальный ход
     }
-    if ((desk[Y2][X2] == ' ') && (X2 == X1) && (Y1 - Y2 == 1)) {
+    if ((board[Y2][X2] == ' ') && (X2 == X1) && (Y1 - Y2 == 1)) {
       transformPawn();
       return 1; //ход по пустым клеткам
     }
-    if ((desk[Y2][X2] < 'S' && desk[Y2][X2] > 'A') &&
+    if ((board[Y2][X2] < 'S' && board[Y2][X2] > 'A') &&
         ((X1 - X2 == 1) || (X1 - X2 == -1)) && (Y1 - Y2 == 1)) {
       return 1; //рубим чужих
     }
@@ -108,26 +108,26 @@ int black() {
 
 void transformPawn() {
   char npawn;
-  if ((desk[Y1][X1] == 'p') && (Y2 == 0)) {
+  if ((board[Y1][X1] == 'p') && (Y2 == 0)) {
     while (1) {
       printf("Введите в какую фигуру вревратить:");
       npawn = getchar();
       if ((npawn == 'r') || (npawn == 'n') || (npawn == 'b') ||
           (npawn == 'q')) {
-        desk[Y1][X1] = npawn;
+        board[Y1][X1] = npawn;
         break;
       } else {
         printf("Введите правильную фигуру.\n");
       }
     }
   }
-  if ((desk[Y1][X1] == 'P') && (Y2 == 7)) {
+  if ((board[Y1][X1] == 'P') && (Y2 == 7)) {
     while (1) {
       printf("Введите в какую фигуру вревратить:");
       npawn = getchar();
       if ((npawn == 'R') || (npawn == 'N') || (npawn == 'B') ||
           (npawn == 'Q')) {
-        desk[Y1][X1] = npawn;
+        board[Y1][X1] = npawn;
         break;
       } else {
         printf("Введите правильную фигуру.\n");
@@ -137,8 +137,8 @@ void transformPawn() {
 }
 
 void move() {
-  desk[Y2][X2] = desk[Y1][X1];
-  desk[Y1][X1] = ' ';
+  board[Y2][X2] = board[Y1][X1];
+  board[Y1][X1] = ' ';
 }
 
 int checkY() {
@@ -151,8 +151,8 @@ int checkY() {
     c2 = Y1;
   }
   for (i = c1 + 1; i < c2; i++) {
-    if ((desk[i][X1] > 'a' && desk[i][X1] < 's') ||
-        (desk[i][X1] > 'A' && desk[i][X1] < 'S')) {
+    if ((board[i][X1] > 'a' && board[i][X1] < 's') ||
+        (board[i][X1] > 'A' && board[i][X1] < 'S')) {
       return 0;
     }
   }
@@ -164,7 +164,7 @@ int checkWIn(int status) {
   if (status == 1) {
     for (i = 0; i < 8; i++) {
       for (j = 0; j < 8; j++) {
-        if (desk[i][j] == 'q') {
+        if (board[i][j] == 'q') {
           player = 1;
         }
       }
@@ -173,7 +173,7 @@ int checkWIn(int status) {
   if (status == 2) {
     for (i = 0; i < 8; i++) {
       for (j = 0; j < 8; j++) {
-        if (desk[i][j] == 'Q') {
+        if (board[i][j] == 'Q') {
           player = 2;
         }
       }
