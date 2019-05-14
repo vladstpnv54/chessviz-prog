@@ -110,7 +110,7 @@ void transformPawn() {
   char npawn;
   if ((board[Y1][X1] == 'p') && (Y2 == 0)) {
     while (1) {
-      printf("Введите в какую фигуру вревратить:");
+      printf("Введите в какую фигуру превратить:");
       npawn = getchar();
       if ((npawn == 'r') || (npawn == 'n') || (npawn == 'b') ||
           (npawn == 'q')) {
@@ -123,7 +123,7 @@ void transformPawn() {
   }
   if ((board[Y1][X1] == 'P') && (Y2 == 7)) {
     while (1) {
-      printf("Введите в какую фигуру вревратить:");
+      printf("Введите в какую фигуру превратить:");
       npawn = getchar();
       if ((npawn == 'R') || (npawn == 'N') || (npawn == 'B') ||
           (npawn == 'Q')) {
