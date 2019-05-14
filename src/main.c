@@ -24,13 +24,13 @@ int main() {
 
   while (1) {
     printf("Белые (Большие буквы):");
-      scanan(1);
-      move();
-      printdesk();
-      status = checkWIn(1);
-      if (status != 0) {
-        break;
-      }
+    scanan(1);
+    move();
+    printdesk();
+    status = checkWIn(1);
+    if (status != 0) {
+      break;
+    }
 
     printf("Черные (Маленькие буквы):");
     scanan(2);
@@ -38,11 +38,11 @@ int main() {
     printdesk();
     status = checkWIn(2);
     if (status != 0) {
-        break;
+      break;
     }
 }
 
   printf("Player %d win\n", status);
 
-return 0;
+  return 0;
 }

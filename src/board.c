@@ -6,32 +6,31 @@ extern char numbers[7];
 extern int X1, X2, Y1, Y2;
 extern char board[8][8];
 
-void scanan(int flag)
-{
+void scanan(int flag) {
   while (1) {
-      while (1) {
-          fgets(numbers, 7, stdin);
-          if (chartoint(numbers)) {
-              break;
-          }
-          printf("Введите заново:");
+    while (1) {
+      fgets(numbers, 7, stdin);
+        if (chartoint(numbers)) {
+          break;
+        }
+        printf("Введите заново:");
       }
       if (flag == 1) {
-          if (white() == 1) {
-            break;
-          } else {
-              printf("Введите заново:");
-          }
+        if (white() == 1) {
+          break;
+        } else {
+          printf("Введите заново:");
+        }
       }
       if (flag == 2) {
-          if (black() == 1) {
-              break;
-          } else {
-              printf("Введите заново:");
-          }
+        if (black() == 1) {
+          break;
+        } else {
+          printf("Введите заново:");
+        }
       }
+    }
   }
-}
 
 int chartoint(char numbers[7]) {
   if ((numbers[2] != '-') && (numbers[2] != 'x')) {
@@ -128,7 +127,7 @@ void transformPawn() {
       npawn = getchar();
       if ((npawn == 'R') || (npawn == 'N') || (npawn == 'B') ||
           (npawn == 'Q')) {
-          board[Y1][X1] = npawn;
+        board[Y1][X1] = npawn;
         break;
       } else {
         printf("Введите правильную фигуру.\n");
@@ -148,14 +147,14 @@ int checkY() {
     return 0;
   }
   if (Y1 > Y2) {
-      c1 = Y2;
-      c2 = Y1;
+    c1 = Y2;
+    c2 = Y1;
   }
   for (i = c1 + 1; i < c2; i++) {
     if ((board[i][X1] > 'a' && board[i][X1] < 's') ||
         (board[i][X1] > 'A' && board[i][X1] < 'S')) {
       return 0;
-      }
+    }
   }
   return 1;
 }
