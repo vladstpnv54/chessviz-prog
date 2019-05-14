@@ -10,27 +10,27 @@ void scanan(int flag) {
   while (1) {
     while (1) {
       fgets(numbers, 7, stdin);
-        if (chartoint(numbers)) {
-          break;
-        }
+      if (chartoint(numbers)) {
+        break;
+      }
+    printf("Введите заново:");
+    }
+    if (flag == 1) {
+      if (white() == 1) {
+        break;
+      } else {
+      printf("Введите заново:");
+      }
+    }
+    if (flag == 2) {
+      if (black() == 1) {
+        break;
+      } else {
         printf("Введите заново:");
-      }
-      if (flag == 1) {
-        if (white() == 1) {
-          break;
-        } else {
-          printf("Введите заново:");
-        }
-      }
-      if (flag == 2) {
-        if (black() == 1) {
-          break;
-        } else {
-          printf("Введите заново:");
-        }
       }
     }
   }
+}
 
 int chartoint(char numbers[7]) {
   if ((numbers[2] != '-') && (numbers[2] != 'x')) {

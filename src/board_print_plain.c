@@ -15,5 +15,5 @@ void printdesk() {
   printf("  ");
   for (i = 0; i < 8; i++)
     printf("%c ", i + 97);
-    printf("\n");
+  printf("\n");
 }
