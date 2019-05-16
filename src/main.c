@@ -40,7 +40,7 @@ int main() {
     if (status != 0) {
       break;
     }
-}
+  }
 
   printf("Player %d win\n", status);
 

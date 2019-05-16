@@ -13,13 +13,13 @@ void scanan(int flag) {
       if (chartoint(numbers)) {
         break;
       }
-    printf("Введите заново:");
+      printf("Введите заново:");
     }
     if (flag == 1) {
       if (white() == 1) {
         break;
       } else {
-      printf("Введите заново:");
+        printf("Введите заново:");
       }
     }
     if (flag == 2) {
