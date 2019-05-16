@@ -10,7 +10,7 @@ void printdesk() {
     for (j = 0; j < 8; j++) {
       printf("%c ", board[i][j]);
     }
-  printf("\n");
+    printf("\n");
   }
   printf("  ");
   for (i = 0; i < 8; i++)
