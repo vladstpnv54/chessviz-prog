@@ -7,6 +7,8 @@ int white();
 int black();
 void move();
 int checkY();
+int checkX();
+int checkD();
 int checkWIn(int status);
 void transformPawn();
 
