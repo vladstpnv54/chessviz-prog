@@ -305,6 +305,24 @@ int checkY() {
   return 1;
 }
 
+int checkX() {
+  int i, c1 = X1, c2 = X2;
+  if (Y1 != Y2) {
+    return 0;
+  }
+  if (X1 > X2) {
+    c1 = X2;
+    c2 = X1;
+  }
+  for (i = c1 + 1; i < c2; i++) {
+    if ((desk[Y1][i] > 'a' && desk[Y1][i] < 's') ||
+        (desk[Y1][i] > 'A' && desk[Y1][i] < 'S')) {
+      return 0;
+    }
+  }
+  return 1;
+}
+
 int checkWIn(int status) {
   int i, j, player = 0;
   if (status == 1) {
