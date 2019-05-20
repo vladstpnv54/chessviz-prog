@@ -1,13 +1,12 @@
 #include "../src/board.h"
 #include "../src/board_print_plain.h"
 #include "../thirdparty/ctest.h"
-#include "../src/board_read.h"
 #include <stdio.h>
 #include <string.h>
 
 int status = 0, i, j;
 int X1, X2, Y1, Y2;
-char board[8][8] = {{' ', ' ', ' ', ' ', ' ', ' ', ' ', ' '},
+char desk[8][8] = {{' ', ' ', ' ', ' ', ' ', ' ', ' ', ' '},
                    {' ', ' ', ' ', ' ', ' ', ' ', ' ', ' '},
                    {' ', ' ', ' ', ' ', ' ', ' ', ' ', ' '},
                    {' ', ' ', ' ', ' ', ' ', ' ', ' ', ' '},
@@ -16,194 +15,6 @@ char board[8][8] = {{' ', ' ', ' ', ' ', ' ', ' ', ' ', ' '},
                    {' ', ' ', ' ', ' ', ' ', ' ', ' ', ' '},
                    {' ', ' ', ' ', ' ', ' ', ' ', ' ', ' '}};
 char input[7];
-
-CTEST(moving, movewhitepawn) // Тест белой пешки
-{
-    strcpy(input, "E2-E3"); // Первый ход на одну клетку
-    chartoint(input);
-    board[Y1][X1] = 'P';
-    int c1 = white();
-
-    strcpy(input, "E2-E4"); // Первый ход на две клетки
-    chartoint(input);
-    int c2 = white();
-
-    board[Y1][X1] = ' ';
-
-    board[Y1][X1] = ' ';
-    board[Y1 + 1][X1] = ' ';
-
-    const int exp1 = 1;
-    const int exp2 = 1;
-
-    ASSERT_EQUAL(exp1, c1);
-    ASSERT_EQUAL(exp2, c2);
-}
-
-CTEST(moving, movewhitepawn2) // Тест белой пешки
-{
-    strcpy(input, "E3-E5"); // Не первый ход на две клетки
-    chartoint(input);
-    board[Y1][X1] = 'P';
-    int c3 = white();
-
-    strcpy(input, "E3-F4"); // Ход по диагонали
-    chartoint(input);
-    int c4 = white();
-
-    strcpy(input, "E3-E2"); // Ход назад
-    chartoint(input);
-    int c5 = white();
-
-    strcpy(input, "E3xF4"); // Взятие чужой фигуры
-    chartoint(input);
-    board[Y2][X2] = 'p';
-    int c6 = white();
-
-    board[Y2][X2] = ' ';
-    board[Y1][X1] = ' ';
-
-    strcpy(input, "E2-E4"); // Первый ход через фигуру
-    chartoint(input);
-    board[Y1][X1] = 'P';
-    board[Y1 + 1][X1] = 'p';
-    int c7 = white();
-
-    board[Y1][X1] = ' ';
-    board[Y1 + 1][X1] = ' ';
-
-    const int exp3 = 0;
-    const int exp4 = 0;
-    const int exp5 = 0;
-    const int exp6 = 1;
-    const int exp7 = 0;
-
-    ASSERT_EQUAL(exp3, c3);
-    ASSERT_EQUAL(exp4, c4);
-    ASSERT_EQUAL(exp5, c5);
-    ASSERT_EQUAL(exp6, c6);
-    ASSERT_EQUAL(exp7, c7);
-}
-
-CTEST(moving, moveblackpawn) // Тест черной пешки
-{
-    strcpy(input, "D7-D6"); // Первый ход на одну клетку
-    chartoint(input);
-    board[Y1][X1] = 'p';
-    int c1 = black();
-
-    strcpy(input, "D7-D5"); // Первый ход на две клетки
-    chartoint(input);
-    int c2 = black();
-
-    board[Y1][X1] = ' ';
-
-    board[Y1][X1] = ' ';
-    board[Y1 + 1][X1] = ' ';
-
-    const int exp1 = 1;
-    const int exp2 = 1;
-
-    ASSERT_EQUAL(exp1, c1);
-    ASSERT_EQUAL(exp2, c2);
-}
-
-CTEST(moving, moverook) // Тест ладьи
-{
-    strcpy(input, "D4-D7"); // Ход вперед
-    chartoint(input);
-    board[Y1][X1] = 'R';
-    int c1 = white();
-
-    strcpy(input, "D4-D2"); // Ход назад
-    chartoint(input);
-    int c2 = white();
-
-    strcpy(input, "D4-F4"); // Ход вправо
-    chartoint(input);
-    int c3 = white();
-
-    strcpy(input, "D4-B4"); // Ход влево
-    chartoint(input);
-    int c4 = white();
-
-    strcpy(input, "D4-F6"); // Ход по диагонали
-    chartoint(input);
-    int c5 = white();
-
-    strcpy(input, "D4xD5"); // Взятие чужой фигуры
-    chartoint(input);
-    board[Y2][X2] = 'r';
-    int c6 = white();
-
-    strcpy(input, "D4-D6"); // Ход через фигуру
-    chartoint(input);
-    int c7 = white();
-
-    board[Y1][X1] = ' ';
-    board[Y2 - 1][X2] = ' ';
-
-    const int exp1 = 1;
-    const int exp2 = 1;
-    const int exp3 = 1;
-    const int exp4 = 1;
-    const int exp5 = 0;
-    const int exp6 = 1;
-    const int exp7 = 0;
-
-    ASSERT_EQUAL(exp1, c1);
-    ASSERT_EQUAL(exp2, c2);
-    ASSERT_EQUAL(exp3, c3);
-    ASSERT_EQUAL(exp4, c4);
-    ASSERT_EQUAL(exp5, c5);
-    ASSERT_EQUAL(exp6, c6);
-    ASSERT_EQUAL(exp7, c7);
-}
-
-CTEST(moving, moveblackpawn2) // Тест черной пешки
-{
-    strcpy(input, "D6-D4"); // Не первый ход на две клетки
-    chartoint(input);
-    board[Y1][X1] = 'p';
-    int c3 = black();
-
-    strcpy(input, "D6-C5"); // Ход по диагонали
-    chartoint(input);
-    int c4 = black();
-
-    strcpy(input, "D6-D7"); // Ход назад
-    chartoint(input);
-    int c5 = black();
-
-    strcpy(input, "D6xC5"); // Взятие чужой фигуры
-    chartoint(input);
-    board[Y2][X2] = 'P';
-    int c6 = black();
-
-    board[Y2][X2] = ' ';
-    board[Y1][X1] = ' ';
-
-    strcpy(input, "D7-D5"); // Первый ход через фигуру
-    chartoint(input);
-    board[Y1][X1] = 'P';
-    board[Y1 + 1][X1] = 'P';
-    int c7 = black();
-
-    board[Y1][X1] = ' ';
-    board[Y1 + 1][X1] = ' ';
-
-    const int exp3 = 0;
-    const int exp4 = 0;
-    const int exp5 = 0;
-    const int exp6 = 1;
-    const int exp7 = 0;
-
-    ASSERT_EQUAL(exp3, c3);
-    ASSERT_EQUAL(exp4, c4);
-    ASSERT_EQUAL(exp5, c5);
-    ASSERT_EQUAL(exp6, c6);
-    ASSERT_EQUAL(exp7, c7);
-}
 
 CTEST(inputdata, chartointer)
 {
@@ -235,11 +46,183 @@ CTEST(inputdata, chartointer)
     ASSERT_EQUAL(exp5, c5);
 }
 
+CTEST(moving, movewhitepawn) // Тест белой пешки
+{
+    strcpy(input, "E2-E3"); // Первый ход на одну клетку
+    chartoint(input);
+    desk[Y1][X1] = 'P';
+    int c1 = white();
+
+    strcpy(input, "E2-E4"); // Первый ход на две клетки
+    chartoint(input);
+    int c2 = white();
+
+    desk[Y1][X1] = ' ';
+
+    strcpy(input, "E3-E5"); // Не первый ход на две клетки
+    chartoint(input);
+    desk[Y1][X1] = 'P';
+    int c3 = white();
+
+    strcpy(input, "E3-F4"); // Ход по диагонали
+    chartoint(input);
+    int c4 = white();
+
+    strcpy(input, "E3-E2"); // Ход назад
+    chartoint(input);
+    int c5 = white();
+
+    strcpy(input, "E3xF4"); // Взятие чужой фигуры
+    chartoint(input);
+    desk[Y2][X2] = 'p';
+    int c6 = white();
+
+    desk[Y2][X2] = ' ';
+    desk[Y1][X1] = ' ';
+
+    strcpy(input, "E2-E4"); // Первый ход через фигуру
+    chartoint(input);
+    desk[Y1][X1] = 'P';
+    desk[Y1 + 1][X1] = 'p';
+    int c7 = white();
+
+    desk[Y1][X1] = ' ';
+    desk[Y1 + 1][X1] = ' ';
+
+    const int exp1 = 1;
+    const int exp2 = 1;
+    const int exp3 = 0;
+    const int exp4 = 0;
+    const int exp5 = 0;
+    const int exp6 = 1;
+    const int exp7 = 0;
+
+    ASSERT_EQUAL(exp1, c1);
+    ASSERT_EQUAL(exp2, c2);
+    ASSERT_EQUAL(exp3, c3);
+    ASSERT_EQUAL(exp4, c4);
+    ASSERT_EQUAL(exp5, c5);
+    ASSERT_EQUAL(exp6, c6);
+    ASSERT_EQUAL(exp7, c7);
+}
+
+CTEST(moving, moveblackpawn) // Тест черной пешки
+{
+    strcpy(input, "D7-D6"); // Первый ход на одну клетку
+    chartoint(input);
+    desk[Y1][X1] = 'p';
+    int c1 = black();
+
+    strcpy(input, "D7-D5"); // Первый ход на две клетки
+    chartoint(input);
+    int c2 = black();
+
+    desk[Y1][X1] = ' ';
+
+    strcpy(input, "D6-D4"); // Не первый ход на две клетки
+    chartoint(input);
+    desk[Y1][X1] = 'p';
+    int c3 = black();
+
+    strcpy(input, "D6-C5"); // Ход по диагонали
+    chartoint(input);
+    int c4 = black();
+
+    strcpy(input, "D6-D7"); // Ход назад
+    chartoint(input);
+    int c5 = black();
+
+    strcpy(input, "D6xC5"); // Взятие чужой фигуры
+    chartoint(input);
+    desk[Y2][X2] = 'P';
+    int c6 = black();
+
+    desk[Y2][X2] = ' ';
+    desk[Y1][X1] = ' ';
+
+    strcpy(input, "D7-D5"); // Первый ход через фигуру
+    chartoint(input);
+    desk[Y1][X1] = 'P';
+    desk[Y1 + 1][X1] = 'P';
+    int c7 = black();
+
+    desk[Y1][X1] = ' ';
+    desk[Y1 + 1][X1] = ' ';
+
+    const int exp1 = 1;
+    const int exp2 = 1;
+    const int exp3 = 0;
+    const int exp4 = 0;
+    const int exp5 = 0;
+    const int exp6 = 1;
+    const int exp7 = 0;
+
+    ASSERT_EQUAL(exp1, c1);
+    ASSERT_EQUAL(exp2, c2);
+    ASSERT_EQUAL(exp3, c3);
+    ASSERT_EQUAL(exp4, c4);
+    ASSERT_EQUAL(exp5, c5);
+    ASSERT_EQUAL(exp6, c6);
+    ASSERT_EQUAL(exp7, c7);
+}
+
+CTEST(moving, moverook) // Тест ладьи
+{
+    strcpy(input, "D4-D7"); // Ход вперед
+    chartoint(input);
+    desk[Y1][X1] = 'R';
+    int c1 = white();
+
+    strcpy(input, "D4-D2"); // Ход назад
+    chartoint(input);
+    int c2 = white();
+
+    strcpy(input, "D4-F4"); // Ход вправо
+    chartoint(input);
+    int c3 = white();
+
+    strcpy(input, "D4-B4"); // Ход влево
+    chartoint(input);
+    int c4 = white();
+
+    strcpy(input, "D4-F6"); // Ход по диагонали
+    chartoint(input);
+    int c5 = white();
+
+    strcpy(input, "D4xD5"); // Взятие чужой фигуры
+    chartoint(input);
+    desk[Y2][X2] = 'r';
+    int c6 = white();
+
+    strcpy(input, "D4-D6"); // Ход через фигуру
+    chartoint(input);
+    int c7 = white();
+
+    desk[Y1][X1] = ' ';
+    desk[Y2 - 1][X2] = ' ';
+
+    const int exp1 = 1;
+    const int exp2 = 1;
+    const int exp3 = 1;
+    const int exp4 = 1;
+    const int exp5 = 0;
+    const int exp6 = 1;
+    const int exp7 = 0;
+
+    ASSERT_EQUAL(exp1, c1);
+    ASSERT_EQUAL(exp2, c2);
+    ASSERT_EQUAL(exp3, c3);
+    ASSERT_EQUAL(exp4, c4);
+    ASSERT_EQUAL(exp5, c5);
+    ASSERT_EQUAL(exp6, c6);
+    ASSERT_EQUAL(exp7, c7);
+}
+
 CTEST(moving, moveknight) // Тест коня
 {
     strcpy(input, "D4-D7"); // Ход вперед
     chartoint(input);
-    board[Y1][X1] = 'N';
+    desk[Y1][X1] = 'N';
     int c1 = white();
 
     strcpy(input, "D4-D2"); // Ход назад
@@ -292,13 +275,13 @@ CTEST(moving, moveknight) // Тест коня
 
     strcpy(input, "D4xE6"); // Ход через фигуру и взятие
     chartoint(input);
-    board[X1 + 1][Y1] = 'p';
-    board[Y2][X2] = 'n';
+    desk[X1 + 1][Y1] = 'p';
+    desk[Y2][X2] = 'n';
     int c7 = white();
 
-    board[Y1][X1] = ' ';
-    board[X1 + 1][Y1] = ' ';
-    board[Y2][X2] = ' ';
+    desk[Y1][X1] = ' ';
+    desk[X1 + 1][Y1] = ' ';
+    desk[Y2][X2] = ' ';
 
     const int exp1 = 0;
     const int exp2 = 0;
@@ -331,85 +314,11 @@ CTEST(moving, moveknight) // Тест коня
     ASSERT_EQUAL(exp7, c7);
 }
 
-CTEST(moving, movequeen) // Тест ферзя
-{
-    strcpy(input, "D4-D7"); // Ход вверх
-    chartoint(input);
-    board[Y1][X1] = 'Q';
-    int c1 = white();
-
-    strcpy(input, "D4-D1"); // Ход вниз
-    chartoint(input);
-    int c2 = white();
-
-    strcpy(input, "D4-A4"); // Ход влево
-    chartoint(input);
-    int c3 = white();
-
-    strcpy(input, "D4-G4"); // Ход вправо
-    chartoint(input);
-    int c4 = white();
-
-    strcpy(input, "D4-G7"); // Ход по диагонали вверх вправо
-    chartoint(input);
-    int c5 = white();
-
-    strcpy(input, "D4-A7"); // Ход по диагонали вверх влево
-    chartoint(input);
-    int c6 = white();
-
-    strcpy(input, "D4-A1"); // Ход по диагонали вних влево
-    chartoint(input);
-    int c7 = white();
-
-    strcpy(input, "D4xG1"); // Ход по диагонали вниз вправо и взятие
-    chartoint(input);
-    board[Y2][X2] = 'p';
-    int c8 = white();
-
-    board[Y2][X2] = ' ';
-
-    strcpy(input, "D4-G7"); // Ход по диагонали вверх вправо через фигуру
-    chartoint(input);
-    board[Y2 - 1][X2 - 1] = 'p';
-    int c9 = white();
-
-    board[Y2 - 1][X2 - 1] = ' ';
-
-    strcpy(input, "D4-F7"); // Ход Г по диагонали вверх вправо
-    chartoint(input);
-    int c10 = white();
-
-    board[Y1][X1] = ' ';
-
-    const int exp1 = 1;
-    const int exp2 = 1;
-    const int exp3 = 1;
-    const int exp4 = 1;
-    const int exp5 = 1;
-    const int exp6 = 1;
-    const int exp7 = 1;
-    const int exp8 = 1;
-    const int exp9 = 0;
-    const int exp10 = 0;
-
-    ASSERT_EQUAL(exp1, c1);
-    ASSERT_EQUAL(exp2, c2);
-    ASSERT_EQUAL(exp3, c3);
-    ASSERT_EQUAL(exp4, c4);
-    ASSERT_EQUAL(exp5, c5);
-    ASSERT_EQUAL(exp6, c6);
-    ASSERT_EQUAL(exp7, c7);
-    ASSERT_EQUAL(exp8, c8);
-    ASSERT_EQUAL(exp9, c9);
-    ASSERT_EQUAL(exp10, c10);
-}
-
 CTEST(moving, movebishop) // Тест слона
 {
     strcpy(input, "D4-D7"); // Ход вперед
     chartoint(input);
-    board[Y1][X1] = 'B';
+    desk[Y1][X1] = 'B';
     int c1 = white();
 
     strcpy(input, "D4-D2"); // Ход назад
@@ -438,18 +347,18 @@ CTEST(moving, movebishop) // Тест слона
 
     strcpy(input, "D4xB2"); // Ход по диагонали вверх вправо и взятие
     chartoint(input);
-    board[Y2][X2] = 'p';
+    desk[Y2][X2] = 'p';
     int c54 = white();
 
-    board[Y2][X2] = ' ';
+    desk[Y2][X2] = ' ';
 
     strcpy(input, "D4-F6"); // Ход по диагонали вниз вправо через фигуру
     chartoint(input);
-    board[Y2 - 1][X2 - 1] = 'p';
+    desk[Y2 - 1][X2 - 1] = 'p';
     int c6 = white();
 
-    board[Y1][X1] = ' ';
-    board[Y2 - 1][X2 - 1] = ' ';
+    desk[Y1][X1] = ' ';
+    desk[Y2 - 1][X2 - 1] = ' ';
 
     const int exp1 = 0;
     const int exp2 = 0;
@@ -476,7 +385,7 @@ CTEST(moving, moveking) // Тест короля
 {
     strcpy(input, "D4-D5"); // Ход вверх
     chartoint(input);
-    board[Y1][X1] = 'K';
+    desk[Y1][X1] = 'K';
     int c1 = white();
 
     strcpy(input, "D4-D3"); // Ход вниз
@@ -505,10 +414,10 @@ CTEST(moving, moveking) // Тест короля
 
     strcpy(input, "D4xC3"); // Ход вниз влево и взятие
     chartoint(input);
-    board[Y2][X2] = 'p';
+    desk[Y2][X2] = 'p';
     int c8 = white();
 
-    board[Y2][X2] = ' ';
+    desk[Y2][X2] = ' ';
 
     strcpy(input, "D4-D6"); // Ход вверх на 2 клетки
     chartoint(input);
@@ -518,7 +427,81 @@ CTEST(moving, moveking) // Тест короля
     chartoint(input);
     int c10 = white();
 
-    board[Y1][X1] = ' ';
+    desk[Y1][X1] = ' ';
+
+    const int exp1 = 1;
+    const int exp2 = 1;
+    const int exp3 = 1;
+    const int exp4 = 1;
+    const int exp5 = 1;
+    const int exp6 = 1;
+    const int exp7 = 1;
+    const int exp8 = 1;
+    const int exp9 = 0;
+    const int exp10 = 0;
+
+    ASSERT_EQUAL(exp1, c1);
+    ASSERT_EQUAL(exp2, c2);
+    ASSERT_EQUAL(exp3, c3);
+    ASSERT_EQUAL(exp4, c4);
+    ASSERT_EQUAL(exp5, c5);
+    ASSERT_EQUAL(exp6, c6);
+    ASSERT_EQUAL(exp7, c7);
+    ASSERT_EQUAL(exp8, c8);
+    ASSERT_EQUAL(exp9, c9);
+    ASSERT_EQUAL(exp10, c10);
+}
+
+CTEST(moving, movequeen) // Тест ферзя
+{
+    strcpy(input, "D4-D7"); // Ход вверх
+    chartoint(input);
+    desk[Y1][X1] = 'Q';
+    int c1 = white();
+
+    strcpy(input, "D4-D1"); // Ход вниз
+    chartoint(input);
+    int c2 = white();
+
+    strcpy(input, "D4-A4"); // Ход влево
+    chartoint(input);
+    int c3 = white();
+
+    strcpy(input, "D4-G4"); // Ход вправо
+    chartoint(input);
+    int c4 = white();
+
+    strcpy(input, "D4-G7"); // Ход по диагонали вверх вправо
+    chartoint(input);
+    int c5 = white();
+
+    strcpy(input, "D4-A7"); // Ход по диагонали вверх влево
+    chartoint(input);
+    int c6 = white();
+
+    strcpy(input, "D4-A1"); // Ход по диагонали вних влево
+    chartoint(input);
+    int c7 = white();
+
+    strcpy(input, "D4xG1"); // Ход по диагонали вниз вправо и взятие
+    chartoint(input);
+    desk[Y2][X2] = 'p';
+    int c8 = white();
+
+    desk[Y2][X2] = ' ';
+
+    strcpy(input, "D4-G7"); // Ход по диагонали вверх вправо через фигуру
+    chartoint(input);
+    desk[Y2 - 1][X2 - 1] = 'p';
+    int c9 = white();
+
+    desk[Y2 - 1][X2 - 1] = ' ';
+
+    strcpy(input, "D4-F7"); // Ход Г по диагонали вверх вправо
+    chartoint(input);
+    int c10 = white();
+
+    desk[Y1][X1] = ' ';
 
     const int exp1 = 1;
     const int exp2 = 1;
