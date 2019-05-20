@@ -2,3 +2,5 @@ main
 .DS_Store
 *.o
 chessviz
+chessviz-test
+bin/chessviz
