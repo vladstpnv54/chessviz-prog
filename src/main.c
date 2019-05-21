@@ -13,7 +13,8 @@ char desk[8][8] = {{'R', 'N', 'B', 'K', 'Q', 'B', 'N', 'R'},
                    {'p', 'p', 'p', 'p', 'p', 'p', 'p', 'p'},
                    {'r', 'n', 'b', 'q', 'k', 'b', 'n', 'r'}};
 
-int main() {
+int main()
+{
   int status = 0;
 
   printf("     Шахматы\n");
@@ -22,13 +23,15 @@ int main() {
 
   printdesk();
 
-  while (1) {
+  while (1)
+  {
     printf("Белые (Большие буквы):");
     scanan(1);
     move();
     printdesk();
     status = checkWIn(1);
-    if (status != 0) {
+    if (status != 0)
+    {
       break;
     }
 
@@ -37,7 +40,8 @@ int main() {
     move();
     printdesk();
     status = checkWIn(2);
-    if (status != 0) {
+    if (status != 0)
+    {
       break;
     }
   }
